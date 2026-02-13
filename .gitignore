@@ -1,0 +1,7 @@
+.idea
+logs/server.log
+application-properties
+target
+.env
+hibernate.cfg.xml
+logs
