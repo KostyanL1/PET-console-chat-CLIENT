@@ -32,9 +32,11 @@ public class ResiverService implements Runnable{
                     if ((message = bufferedReader.readLine()) != null){
                         ServerMessage serverMessage = jsonCodec.decode(message, ServerMessage.class);
                         switch (serverMessage.getMessageType()){
-                            case OK -> {
-                                AuthDto authDto = jsonCodec.decode(serverMessage.getContent(), AuthDto.class);
-                                System.out.println("Authenticate with username : " + authDto.getUsername());
+                            case OK, ERROR -> {
+                                System.out.println(serverMessage.getContent());
+                            }
+                            case MSG -> {
+                                System.out.println(serverMessage.getFrom() + " : " + serverMessage.getContent());
                             }
                         }
 

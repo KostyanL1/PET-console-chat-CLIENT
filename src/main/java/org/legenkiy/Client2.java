@@ -1,7 +1,8 @@
 package org.legenkiy;
 
-import org.legenkiy.protocol.message.ClientMessage;
+import org.legenkiy.protocol.dtos.AuthDto;
 import org.legenkiy.protocol.mapper.JsonCodec;
+import org.legenkiy.protocol.message.ClientMessage;
 import org.legenkiy.resiver.ResiverService;
 
 import java.io.IOException;
@@ -9,9 +10,12 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class Сlient2 {
+public class Client2 {
+
+
     public static void main(String[] args) {
 
+        String clientUsername = null;
 
         JsonCodec jsonCodec = new JsonCodec();
 
@@ -31,9 +35,9 @@ public class Сlient2 {
                             String username = scanner.nextLine();
                             System.out.println("ENTER PASSWORD");
                             String password = scanner.nextLine();
-                            ClientMessage clientMessage = ClientMessage.login(username, password);
+                            ClientMessage clientMessage = ClientMessage.login(new AuthDto(username, password));
                             printWriter.println(jsonCodec.encode(clientMessage));
-                            break;
+                            clientUsername = username;
                         }
                         case "/message" -> {
                             System.out.println("ENTER USERNAME FOR SEND MESSAGE");
@@ -41,22 +45,31 @@ public class Сlient2 {
                             System.out.println("ENTER MESSAGE");
                             String content = scanner.nextLine();
                             ClientMessage clientMessage = ClientMessage.privateMessage(username, content);
+                            clientMessage.setFrom(clientUsername);
                             printWriter.println(jsonCodec.encode(clientMessage));
-                            break;
+                        }
+                        case "/register" -> {
+                            System.out.println("ENTER USERNAME");
+                            String username = scanner.nextLine();
+                            System.out.println("ENTER PASSWORD");
+                            String password = scanner.nextLine();
+                            printWriter.println(jsonCodec.encode(ClientMessage.register(new AuthDto(username, password))));
+                            clientUsername = username;
                         }
 
                         default -> {
                             System.out.println("UNKNOWN COMMAND");
-                            break;
                         }
-
                     }
                 }
             }
-
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println(e);
         }
+
+
+
+
 
     }
 }
