@@ -3,6 +3,7 @@ package org.legenkiy.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.legenkiy.api.ApplicationContextService;
 import org.legenkiy.api.ConnectionService;
 import org.legenkiy.api.RequestService;
 import org.legenkiy.net.Resiver;
@@ -17,13 +18,15 @@ public class ConnectionServiceImpl implements ConnectionService {
     private final static Logger LOGGER = LogManager.getLogger(ConnectionServiceImpl.class);
 
     private final RequestService requestService = new RequestServiceImpl();
+    private final ApplicationContextService applicationContextService = new ApplicationContextServiceImpl();
 
     @Override
     public void connect() {
         TcpClient tcpClient = new TcpClient();
         Resiver resiver = new Resiver();
         try {
-            ApplicationContextHolder.getHolder();
+            //for init context holder
+            applicationContextService.getHolder();
             Thread tcpClientThreat = new Thread(tcpClient);
             Thread resiverThread = new Thread(resiver);
             tcpClientThreat.start();
@@ -38,7 +41,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     @Override
     public void dissconect() {
         try {
-            Socket socket = ApplicationContextHolder.getHolder().getSocket();
+            Socket socket = applicationContextService.getApplicationSocket();
             if (!socket.isClosed()) {
                 socket.close();
                 LOGGER.info("Disconnected");

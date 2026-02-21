@@ -2,6 +2,7 @@ package org.legenkiy.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.legenkiy.api.ApplicationContextService;
 import org.legenkiy.api.RequestService;
 import org.legenkiy.protocol.mapper.JsonCodec;
 import org.legenkiy.protocol.message.ClientMessage;
@@ -13,6 +14,7 @@ public class RequestServiceImpl implements RequestService {
 
     private final JsonCodec mapper = new JsonCodec();
     private final Logger LOGGER = LogManager.getLogger(RequestServiceImpl.class);
+    private final ApplicationContextService applicationContextService = new ApplicationContextServiceImpl();
 
     @Override
     public void sendHello() {
@@ -23,7 +25,7 @@ public class RequestServiceImpl implements RequestService {
                     .println(
                             mapper.encode(
                                     ClientMessage.hello(
-                                            ApplicationContextHolder.getHolder().getPROTOCOL_VER()
+                                            applicationContextService.getProtocolVer()
                                     )
                             )
                     );
