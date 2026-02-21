@@ -17,12 +17,13 @@ public class ApplicationContextHolder {
     private Socket socket = new Socket("localhost", 1010);
 
 
-    private ApplicationContextHolder() throws IOException {}
+    private ApplicationContextHolder() throws IOException {
+    }
 
     public static ApplicationContextHolder getHolder() throws IOException {
-        if (applicationContextHolder == null){
-            synchronized (ApplicationContextHolder.class){
-                if (applicationContextHolder == null){
+        if (applicationContextHolder == null) {
+            synchronized (ApplicationContextHolder.class) {
+                if (applicationContextHolder == null) {
                     applicationContextHolder = new ApplicationContextHolder();
                 }
             }

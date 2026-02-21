@@ -23,7 +23,7 @@ public class ConnectionServiceImpl implements ConnectionService {
             tcpClientThreat.start();
             resiverThread.start();
             LOGGER.info("Connected");
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.info(e);
         }
     }

@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.net.Socket;
 
 
-public class TcpClient implements Runnable{
+public class TcpClient implements Runnable {
 
     private static final Logger LOGGER = LogManager.getLogger(TcpClient.class);
 
@@ -23,11 +23,10 @@ public class TcpClient implements Runnable{
             ApplicationContextHolder.getHolder().setClientState(clientState);
         } catch (Exception e) {
             LOGGER.info(e);
-        }
-        finally {
+        } finally {
             try {
                 Socket socket = ApplicationContextHolder.getHolder().getSocket();
-                if (!socket.isClosed()){
+                if (!socket.isClosed()) {
                     socket.close();
                     LOGGER.info("Socked closed");
                 }
@@ -40,7 +39,7 @@ public class TcpClient implements Runnable{
 
     void closeResources(Socket socket) {
         try {
-            if (socket != null){
+            if (socket != null) {
                 socket.close();
             }
         } catch (IOException e) {

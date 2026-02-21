@@ -8,8 +8,8 @@ public class CommandHandlerServiceImpl implements CommandHandlerService {
 
     @Override
     public void handle(String command) {
-        switch (command){
-            case "/connect" ->{
+        switch (command) {
+            case "/connect" -> {
                 connectionService.connect();
             }
             default -> {
