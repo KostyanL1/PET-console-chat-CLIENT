@@ -16,7 +16,7 @@ public class ClientState {
     private String username;
     private State state;
 
-    public ClientState(State state){
+    public ClientState(State state) {
         this.state = state;
     }
 

@@ -9,14 +9,14 @@ import org.legenkiy.protocol.mapper.JsonCodec;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Resiver implements Runnable{
+public class Resiver implements Runnable {
 
     private final JsonCodec jsonCodec = new JsonCodec();
 
 
     @Override
     public void run() {
-        while (true){
+        while (true) {
 
         }
 
