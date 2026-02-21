@@ -12,6 +12,9 @@ public class CommandHandlerServiceImpl implements CommandHandlerService {
             case "/connect" -> {
                 connectionService.connect();
             }
+            case "/disconnect" -> {
+                connectionService.dissconect();
+            }
             default -> {
                 System.out.println("Unknown command");
             }
