@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.legenkiy.api.ApplicationContextService;
 import org.legenkiy.api.ChatService;
 import org.legenkiy.protocol.mapper.JsonCodec;
-import org.legenkiy.protocol.message.ClientMessage;
+
 
 public class ChatServiceImpl implements ChatService {
 
@@ -12,27 +12,12 @@ public class ChatServiceImpl implements ChatService {
     private final ApplicationContextService applicationContextService = new ApplicationContextServiceImpl();
 
     @Override
-    public void connectToChat(String username) throws JsonProcessingException {
-        applicationContextService.getApplicationPrintWriter()
-                .println(
-                        mapper.encode(
-                                ClientMessage.connectToPm(
-                                        username
-                                )
-                        )
-                );
+    public void connectToChat(String username) {
     }
 
     @Override
-    public void sendMessage(String message) throws JsonProcessingException {
-        applicationContextService.getApplicationPrintWriter()
-                .println(
-                        mapper.encode(
-                                ClientMessage.message(message)
-                        )
-                );
+    public void sendMessage(String message) {
     }
-
 
 
 }
