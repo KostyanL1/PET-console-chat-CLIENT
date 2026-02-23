@@ -21,4 +21,6 @@ public interface ApplicationContextService {
 
     BufferedReader getApplicationBufferedReader();
 
+    void connect(Socket socket);
+
 }

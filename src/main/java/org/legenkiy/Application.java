@@ -15,7 +15,7 @@ public class Application {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         CommandHandlerService commandHandlerService = new CommandHandlerServiceImpl();
-        System.out.println("> HELLO :)/");
+        System.out.println("> HELLO :)");
         String command;
         while (!(command = scanner.nextLine().replace(" ", "")).equals("/exit")) {
             commandHandlerService.handle(command);
