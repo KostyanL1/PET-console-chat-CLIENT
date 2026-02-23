@@ -3,6 +3,7 @@ package org.legenkiy.api;
 import org.legenkiy.state.ApplicationContextHolder;
 import org.legenkiy.state.ClientState;
 
+import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
@@ -17,5 +18,7 @@ public interface ApplicationContextService {
     ClientState getState();
 
     int getProtocolVer();
+
+    BufferedReader getApplicationBufferedReader();
 
 }

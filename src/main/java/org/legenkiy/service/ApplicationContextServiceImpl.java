@@ -7,6 +7,7 @@ import org.legenkiy.api.ApplicationContextService;
 import org.legenkiy.state.ApplicationContextHolder;
 import org.legenkiy.state.ClientState;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -44,5 +45,10 @@ public class ApplicationContextServiceImpl implements ApplicationContextService 
     @Override
     public int getProtocolVer() {
         return getHolder().getPROTOCOL_VER();
+    }
+
+    @Override
+    public BufferedReader getApplicationBufferedReader() {
+        return getHolder().getBufferedReader();
     }
 }
