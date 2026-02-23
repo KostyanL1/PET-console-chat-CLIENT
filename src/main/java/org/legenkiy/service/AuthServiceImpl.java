@@ -17,6 +17,19 @@ public class AuthServiceImpl implements AuthService {
     private final SenderService senderService = new SenderServiceImpl();
 
     @Override
+    public void register(){
+        System.out.println("> Enter username");
+        String username = scanner.nextLine();
+        System.out.println("> Enter password");
+        String password = scanner.nextLine();
+        senderService.send(
+                ClientMessage.register(
+                        new AuthDto(username, password)
+                )
+        );
+    }
+
+    @Override
     public void login() {
         System.out.println("> Enter username");
         String username = scanner.nextLine();

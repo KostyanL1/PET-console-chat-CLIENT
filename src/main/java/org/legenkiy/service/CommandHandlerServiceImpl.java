@@ -17,11 +17,11 @@ public class CommandHandlerServiceImpl implements CommandHandlerService {
             case "/disconnect" -> {
                 connectionService.dissconect();
             }
+            case "/register" -> {
+                authService.register();
+            }
             case "/login" -> {
                 authService.login();
-            }
-            case "/logout" ->{
-
             }
             case "/chat" -> {
 
