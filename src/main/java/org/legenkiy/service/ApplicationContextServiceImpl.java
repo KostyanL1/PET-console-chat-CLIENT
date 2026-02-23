@@ -7,7 +7,9 @@ import org.legenkiy.api.ApplicationContextService;
 import org.legenkiy.state.ApplicationContextHolder;
 import org.legenkiy.state.ClientState;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
@@ -18,12 +20,7 @@ public class ApplicationContextServiceImpl implements ApplicationContextService 
 
     @Override
     public ApplicationContextHolder getHolder() {
-        try {
-            return ApplicationContextHolder.getHolder();
-        } catch (IOException e) {
-            LOGGER.info("Context doesn`t exist yet");
-            throw new RuntimeException("Failed to get holder. Maybe holder doesn`t exist yet. " + e.getMessage());
-        }
+        return ApplicationContextHolder.getHolder();
     }
 
     @Override
@@ -44,5 +41,25 @@ public class ApplicationContextServiceImpl implements ApplicationContextService 
     @Override
     public int getProtocolVer() {
         return getHolder().getPROTOCOL_VER();
+    }
+
+    @Override
+    public BufferedReader getApplicationBufferedReader() {
+        return getHolder().getBufferedReader();
+    }
+
+    @Override
+    public void connect(Socket socket){
+        try {
+            ApplicationContextHolder holder = getHolder();
+            holder.setSocket(socket);
+            holder.setPrintWriter(new PrintWriter(socket.getOutputStream(), true));
+            holder.setBufferedReader(new BufferedReader(new InputStreamReader(socket.getInputStream())));
+
+            LOGGER.info("Successfully connected to {}", socket.getRemoteSocketAddress());
+        } catch (IOException e) {
+            LOGGER.error("Connection failed: {}", e.getMessage());
+            throw new RuntimeException("Could not establish connection", e);
+        }
     }
 }

@@ -3,42 +3,30 @@ package org.legenkiy.state;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.IOException;
+import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
 public class ApplicationContextHolder {
 
-    private static volatile ApplicationContextHolder applicationContextHolder;
+    private static volatile ApplicationContextHolder instance;
 
-    @Getter
-    private final int PROTOCOL_VER = 1;
-    @Getter
-    @Setter
-    private ClientState clientState;
-    @Getter
-    @Setter
-    private Socket socket;
-    @Getter
-    private PrintWriter printWriter;
+    @Getter private final int PROTOCOL_VER = 1;
+    @Getter @Setter private ClientState clientState;
+    @Getter @Setter private Socket socket;
+    @Getter @Setter private PrintWriter printWriter;
+    @Getter @Setter private BufferedReader bufferedReader;
 
-    {
-        this.socket = new Socket("localhost", 1010);
-        this.printWriter = new PrintWriter(socket.getOutputStream());
-    }
+    private ApplicationContextHolder() {}
 
-    private ApplicationContextHolder() throws IOException {
-    }
-
-    public static ApplicationContextHolder getHolder() throws IOException {
-        if (applicationContextHolder == null) {
+    public static ApplicationContextHolder getHolder() {
+        if (instance == null) {
             synchronized (ApplicationContextHolder.class) {
-                if (applicationContextHolder == null) {
-                    applicationContextHolder = new ApplicationContextHolder();
+                if (instance == null) {
+                    instance = new ApplicationContextHolder();
                 }
             }
         }
-        return applicationContextHolder;
+        return instance;
     }
-
 }

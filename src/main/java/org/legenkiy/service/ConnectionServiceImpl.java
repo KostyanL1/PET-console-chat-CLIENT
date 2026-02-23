@@ -8,12 +8,14 @@ import org.legenkiy.api.ConnectionService;
 import org.legenkiy.api.RequestService;
 import org.legenkiy.net.Resiver;
 import org.legenkiy.net.TcpClient;
-import org.legenkiy.state.ApplicationContextHolder;
 
 import java.io.IOException;
 import java.net.Socket;
 
 public class ConnectionServiceImpl implements ConnectionService {
+
+    private final String HOST = "localhost";
+    private final int PORT = 1010;
 
     private final static Logger LOGGER = LogManager.getLogger(ConnectionServiceImpl.class);
 
@@ -26,12 +28,11 @@ public class ConnectionServiceImpl implements ConnectionService {
         Resiver resiver = new Resiver();
         try {
             //for init context holder
-            applicationContextService.getHolder();
+            applicationContextService.connect(new Socket(HOST, PORT));
             Thread tcpClientThreat = new Thread(tcpClient);
             Thread resiverThread = new Thread(resiver);
             tcpClientThreat.start();
             resiverThread.start();
-            requestService.sendHello();
             LOGGER.info("Connected");
         } catch (Exception e) {
             LOGGER.info("Failed to connect to server, {}", e.getMessage());

@@ -19,34 +19,28 @@ public class TcpClient implements Runnable {
 
     @Override
     public void run() {
-        try (Socket socket = applicationContextService.getApplicationSocket()) {
-            LOGGER.info("Connected to server on port {}", 1010);
-            ClientState clientState = new ClientState(State.UNAUTHENTICATED);
-            applicationContextService.getHolder().setClientState(clientState);
-        } catch (Exception e) {
-            LOGGER.info(e);
-        } finally {
-            try {
-                Socket socket = applicationContextService.getApplicationSocket();
-                if (!socket.isClosed()) {
-                    socket.close();
-                    LOGGER.info("Socked closed");
+            try (Socket socket = applicationContextService.getApplicationSocket()) {
+                LOGGER.info("TcpClient monitoring started");
+                while (true){
+                    if (socket != null && !socket.isClosed()) {
+                        ClientState clientState = new ClientState(State.UNAUTHENTICATED);
+                        applicationContextService.getHolder().setClientState(clientState);
+                    }
                 }
-
-            } catch (IOException e) {
-                LOGGER.info("Socket is closed {}", e.getMessage());
+            } catch (Exception e) {
+                LOGGER.info(e);
+            } finally {
+                try {
+                    Socket socket = applicationContextService.getApplicationSocket();
+                    if (!socket.isClosed()) {
+                        socket.close();
+                        LOGGER.info("Socked closed");
+                    }
+                } catch (IOException e) {
+                    LOGGER.info("Socket is closed {}", e.getMessage());
+                }
             }
-        }
-    }
 
-    void closeResources(Socket socket) {
-        try {
-            if (socket != null) {
-                socket.close();
-            }
-        } catch (IOException e) {
-            LOGGER.info(e);
-        }
     }
 
 }
