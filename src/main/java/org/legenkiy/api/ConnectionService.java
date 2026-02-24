@@ -4,6 +4,8 @@ public interface ConnectionService {
 
     void connect();
 
-    void dissconect();
+    void disconnect();
+
+    boolean isConnected();
 
 }

@@ -29,7 +29,7 @@ public class RequestServiceImpl implements RequestService {
                                     )
                             )
                     );
-            LOGGER.info("Hello sent to server");
+            LOGGER.warn("Hello sent to server");
         } catch (IOException e) {
             LOGGER.info("Failed to send hello to server");
             throw new RuntimeException(e);

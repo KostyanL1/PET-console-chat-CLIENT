@@ -34,7 +34,7 @@ public class ApplicationContextServiceImpl implements ApplicationContextService 
     }
 
     @Override
-    public ClientState getState() {
+    public ClientState getClientState() {
         return getHolder().getClientState();
     }
 
@@ -49,7 +49,7 @@ public class ApplicationContextServiceImpl implements ApplicationContextService 
     }
 
     @Override
-    public void connect(Socket socket){
+    public void connect(Socket socket) {
         try {
             ApplicationContextHolder holder = getHolder();
             holder.setSocket(socket);

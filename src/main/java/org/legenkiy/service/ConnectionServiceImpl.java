@@ -8,6 +8,7 @@ import org.legenkiy.api.ConnectionService;
 import org.legenkiy.api.RequestService;
 import org.legenkiy.net.Resiver;
 import org.legenkiy.net.TcpClient;
+import org.legenkiy.state.enums.State;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -40,7 +41,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     }
 
     @Override
-    public void dissconect() {
+    public void disconnect() {
         try {
             Socket socket = applicationContextService.getApplicationSocket();
             if (!socket.isClosed()) {
@@ -51,5 +52,10 @@ public class ConnectionServiceImpl implements ConnectionService {
             LOGGER.info(e);
         }
 
+    }
+
+    @Override
+    public boolean isConnected() {
+        return applicationContextService.getApplicationPrintWriter() != null;
     }
 }
