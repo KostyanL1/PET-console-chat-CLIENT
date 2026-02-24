@@ -23,16 +23,16 @@ public class CommandHandlerServiceImpl implements CommandHandlerService {
                 authService.register();
             }
             case "/login" -> {
-                if (connectionService.isConnected()){
+                if (connectionService.isConnected()) {
                     authService.login();
-                }else {
+                } else {
                     System.out.println("Connection needed");
                 }
             }
             case "/chat" -> {
-                if (connectionService.isConnected()){
+                if (connectionService.isConnected()) {
                     chatService.startChat();
-                }else {
+                } else {
                     System.out.println("Connection needed");
                 }
             }

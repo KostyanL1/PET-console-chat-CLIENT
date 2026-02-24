@@ -35,7 +35,7 @@ public class Resiver implements Runnable {
                 String message;
                 if ((message = bufferedReader.readLine()) != null) {
                     ServerMessage serverMessage = mapper.decode(message, ServerMessage.class);
-                    switch (serverMessage.getMessageType()){
+                    switch (serverMessage.getMessageType()) {
                         case OK -> {
                             System.out.println(serverMessage.getContent());
                         }

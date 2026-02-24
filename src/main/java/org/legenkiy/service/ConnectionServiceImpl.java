@@ -55,7 +55,7 @@ public class ConnectionServiceImpl implements ConnectionService {
     }
 
     @Override
-    public boolean isConnected(){
+    public boolean isConnected() {
         return applicationContextService.getApplicationPrintWriter() != null;
     }
 }

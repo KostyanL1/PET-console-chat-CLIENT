@@ -21,7 +21,7 @@ public class AuthServiceImpl implements AuthService {
     private final ApplicationContextService applicationContextService = new ApplicationContextServiceImpl();
 
     @Override
-    public void register(){
+    public void register() {
         System.out.println("> Enter username");
         String username = scanner.nextLine();
         System.out.println("> Enter password");

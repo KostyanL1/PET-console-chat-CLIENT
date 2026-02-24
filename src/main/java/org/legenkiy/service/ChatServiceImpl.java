@@ -28,7 +28,7 @@ public class ChatServiceImpl implements ChatService {
         boolean flag = true;
         while (flag) {
             String message = scanner.nextLine();
-            if (message.equals("/end")){
+            if (message.equals("/end")) {
                 flag = false;
             }
             ClientState state = applicationContextService.getHolder().getClientState();

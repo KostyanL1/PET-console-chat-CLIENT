@@ -12,13 +12,23 @@ public class ApplicationContextHolder {
 
     private static volatile ApplicationContextHolder instance;
 
-    @Getter private final int PROTOCOL_VER = 1;
-    @Getter @Setter private ClientState clientState;
-    @Getter @Setter private Socket socket;
-    @Getter @Setter private PrintWriter printWriter;
-    @Getter @Setter private BufferedReader bufferedReader;
+    @Getter
+    private final int PROTOCOL_VER = 1;
+    @Getter
+    @Setter
+    private ClientState clientState;
+    @Getter
+    @Setter
+    private Socket socket;
+    @Getter
+    @Setter
+    private PrintWriter printWriter;
+    @Getter
+    @Setter
+    private BufferedReader bufferedReader;
 
-    private ApplicationContextHolder() {}
+    private ApplicationContextHolder() {
+    }
 
     public static ApplicationContextHolder getHolder() {
         if (instance == null) {
