@@ -13,8 +13,8 @@ import org.legenkiy.state.enums.State;
 @Setter
 public class ClientState {
 
-    private String username;
-    private State state;
+    private volatile String username;
+    private volatile State state;
 
     public ClientState(State state) {
         this.state = state;

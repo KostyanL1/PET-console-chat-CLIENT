@@ -23,8 +23,8 @@ public class SenderServiceImpl implements SenderService {
                             clientMessage
                     )
             );
-            LOGGER.info("ClientMessage sent to server, {}", clientMessage.getMessageType());
-        } catch (JsonProcessingException e) {
+            LOGGER.warn("ClientMessage sent to server, {}", clientMessage.getMessageType());
+        } catch (Exception e) {
             LOGGER.info("Message failed to send, {}", e.getMessage());
         }
     }

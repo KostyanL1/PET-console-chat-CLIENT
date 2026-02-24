@@ -34,7 +34,7 @@ public class ApplicationContextServiceImpl implements ApplicationContextService 
     }
 
     @Override
-    public ClientState getState() {
+    public ClientState getClientState() {
         return getHolder().getClientState();
     }
 

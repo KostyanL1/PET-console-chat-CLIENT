@@ -15,7 +15,7 @@ public interface ApplicationContextService {
 
     Socket getApplicationSocket();
 
-    ClientState getState();
+    ClientState getClientState();
 
     int getProtocolVer();
 

@@ -2,6 +2,7 @@ package org.legenkiy.state;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.legenkiy.state.enums.State;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
@@ -24,6 +25,7 @@ public class ApplicationContextHolder {
             synchronized (ApplicationContextHolder.class) {
                 if (instance == null) {
                     instance = new ApplicationContextHolder();
+                    instance.setClientState(new ClientState(State.UNAUTHENTICATED));
                 }
             }
         }
