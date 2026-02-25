@@ -6,11 +6,15 @@ import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.legenkiy.api.ApplicationContextService;
+import org.legenkiy.api.ChatRequestHandlerService;
+import org.legenkiy.api.ChatService;
 import org.legenkiy.protocol.mapper.JsonCodec;
 
 import org.legenkiy.protocol.message.ClientMessage;
 import org.legenkiy.protocol.message.ServerMessage;
 import org.legenkiy.service.ApplicationContextServiceImpl;
+import org.legenkiy.service.ChatRequestHandlerServiceImpl;
+import org.legenkiy.service.ChatServiceImpl;
 import org.legenkiy.state.ClientState;
 
 import java.io.BufferedReader;
@@ -25,6 +29,8 @@ public class Resiver implements Runnable {
     private final JsonCodec mapper = new JsonCodec();
     private final ApplicationContextService applicationContextService = new ApplicationContextServiceImpl();
     private final Logger LOGGER = LogManager.getLogger(Resiver.class);
+    private final ChatRequestHandlerService chatRequestHandlerService = new ChatRequestHandlerServiceImpl();
+    private final ChatService chatService = new ChatServiceImpl();
 
 
     @Override
@@ -39,8 +45,17 @@ public class Resiver implements Runnable {
                         case OK -> {
                             System.out.println(serverMessage.getContent());
                         }
+                        case PM -> {
+                            chatRequestHandlerService.handle(serverMessage);
+                        }
                         case MSG -> {
-                            System.out.println(serverMessage.getFrom() + ": " + serverMessage.getContent());
+                            chatService.handleMessage(serverMessage);
+                        }
+                        case ACCEPTED -> {
+                            chatService.startChat();
+                        }
+                        case REJECTED -> {
+                            System.out.println("Chat request was rejected");
                         }
                         default -> {
                             System.out.println("...");

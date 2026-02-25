@@ -1,14 +1,11 @@
 package org.legenkiy.service;
 
-import org.legenkiy.api.AuthService;
-import org.legenkiy.api.ChatService;
-import org.legenkiy.api.CommandHandlerService;
-import org.legenkiy.api.ConnectionService;
+import org.legenkiy.api.*;
 
 public class CommandHandlerServiceImpl implements CommandHandlerService {
     private final ConnectionService connectionService = new ConnectionServiceImpl();
     private final AuthService authService = new AuthServiceImpl();
-    private final ChatService chatService = new ChatServiceImpl();
+    private final ChatRequestHandlerService chatRequestHandlerService = new ChatRequestHandlerServiceImpl();
 
     @Override
     public void handle(String command) {
@@ -31,7 +28,7 @@ public class CommandHandlerServiceImpl implements CommandHandlerService {
             }
             case "/chat" -> {
                 if (connectionService.isConnected()) {
-                    chatService.startChat();
+                    chatRequestHandlerService.handleChatRequest();
                 } else {
                     System.out.println("Connection needed");
                 }
