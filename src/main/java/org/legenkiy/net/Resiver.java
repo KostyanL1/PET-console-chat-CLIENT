@@ -39,6 +39,9 @@ public class Resiver implements Runnable {
                         case OK -> {
                             System.out.println(serverMessage.getContent());
                         }
+                        case PM -> {
+
+                        }
                         case MSG -> {
                             System.out.println(serverMessage.getFrom() + ": " + serverMessage.getContent());
                         }
