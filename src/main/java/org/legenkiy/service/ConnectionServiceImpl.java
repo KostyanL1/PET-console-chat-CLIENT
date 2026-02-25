@@ -6,8 +6,10 @@ import org.apache.logging.log4j.Logger;
 import org.legenkiy.api.ApplicationContextService;
 import org.legenkiy.api.ConnectionService;
 import org.legenkiy.api.RequestService;
+import org.legenkiy.api.SenderService;
 import org.legenkiy.net.Resiver;
 import org.legenkiy.net.TcpClient;
+import org.legenkiy.protocol.message.ClientMessage;
 import org.legenkiy.state.enums.State;
 
 import java.io.IOException;
@@ -22,6 +24,7 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     private final RequestService requestService = new RequestServiceImpl();
     private final ApplicationContextService applicationContextService = new ApplicationContextServiceImpl();
+    private final SenderService senderService = new SenderServiceImpl();
 
     @Override
     public void connect() {
@@ -34,6 +37,9 @@ public class ConnectionServiceImpl implements ConnectionService {
             Thread resiverThread = new Thread(resiver);
             tcpClientThreat.start();
             resiverThread.start();
+            senderService.send(
+                    ClientMessage.hello(applicationContextService.getProtocolVer())
+            );
             LOGGER.info("Connected");
         } catch (Exception e) {
             LOGGER.info("Failed to connect to server, {}", e.getMessage());

@@ -1,10 +1,15 @@
 package org.legenkiy.api;
 
+
+import org.legenkiy.protocol.message.ServerMessage;
+
 public interface ChatRequestHandlerService {
 
-    void handle();
+    void handle(ServerMessage serverMessage);
 
-    boolean isChotting();
+    boolean isChatting();
+
+    void handleChatRequest();
 
     void endChat();
 

@@ -26,6 +26,9 @@ public class ApplicationContextHolder {
     @Getter
     @Setter
     private BufferedReader bufferedReader;
+    @Getter
+    @Setter
+    private ChatState chatState;
 
     private ApplicationContextHolder() {
     }
@@ -36,6 +39,7 @@ public class ApplicationContextHolder {
                 if (instance == null) {
                     instance = new ApplicationContextHolder();
                     instance.setClientState(new ClientState(State.UNAUTHENTICATED));
+                    instance.setChatState(new ChatState());
                 }
             }
         }
