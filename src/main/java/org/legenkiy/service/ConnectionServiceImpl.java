@@ -28,22 +28,27 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     @Override
     public void connect() {
-        TcpClient tcpClient = new TcpClient();
-        Resiver resiver = new Resiver();
-        try {
-            //for init context holder
-            applicationContextService.connect(new Socket(HOST, PORT));
-            Thread tcpClientThreat = new Thread(tcpClient);
-            Thread resiverThread = new Thread(resiver);
-            tcpClientThreat.start();
-            resiverThread.start();
-            senderService.send(
-                    ClientMessage.hello(applicationContextService.getProtocolVer())
-            );
-            LOGGER.info("Connected");
-        } catch (Exception e) {
-            LOGGER.info("Failed to connect to server, {}", e.getMessage());
+        if (applicationContextService.getApplicationSocket() == null){
+            TcpClient tcpClient = new TcpClient();
+            Resiver resiver = new Resiver();
+            try {
+                //for init context holder
+                applicationContextService.connect(new Socket(HOST, PORT));
+                Thread tcpClientThreat = new Thread(tcpClient);
+                Thread resiverThread = new Thread(resiver);
+                tcpClientThreat.start();
+                resiverThread.start();
+                senderService.send(
+                        ClientMessage.hello(applicationContextService.getProtocolVer())
+                );
+                LOGGER.info("Connected");
+            } catch (Exception e) {
+                LOGGER.info("Failed to connect to server, {}", e.getMessage());
+            }
+        }else {
+            System.out.println("Already connected");
         }
+
     }
 
     @Override
