@@ -33,6 +33,9 @@ public class ChatRequestHandlerServiceImpl implements ChatRequestHandlerService 
             String command = scanner.nextLine();
             switch (command){
                 case "Y" -> {
+                    senderService.send(
+                            ClientMessage.chatAccepted()
+                    );
                     applicationContextService.getHolder().getChatState().initChatState(serverMessage.getFrom());
                     chatService.startChat();
                 }
