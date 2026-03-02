@@ -50,7 +50,7 @@ public class ApplicationContextServiceImpl implements ApplicationContextService 
     }
 
     @Override
-    public ChatState getChatState(){
+    public ChatState getChatState() {
         return getHolder().getChatState();
     }
 

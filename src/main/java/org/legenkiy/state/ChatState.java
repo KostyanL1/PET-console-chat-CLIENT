@@ -16,16 +16,15 @@ public class ChatState {
     private boolean chatting;
 
 
-    public void initChatState(String chatterUsername){
+    public void initChatState(String chatterUsername) {
         this.chatterUsername = chatterUsername;
         this.chatting = true;
     }
 
-    public void clearChatState(){
+    public void clearChatState() {
         this.chatting = false;
         this.chatterUsername = null;
     }
-
 
 
 }

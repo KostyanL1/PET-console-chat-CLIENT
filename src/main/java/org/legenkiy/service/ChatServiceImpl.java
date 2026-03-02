@@ -2,7 +2,6 @@ package org.legenkiy.service;
 
 import org.legenkiy.api.ApplicationContextService;
 import org.legenkiy.api.ChatService;
-import org.legenkiy.api.ConnectionService;
 import org.legenkiy.api.SenderService;
 import org.legenkiy.protocol.mapper.JsonCodec;
 import org.legenkiy.protocol.message.ClientMessage;
@@ -43,7 +42,7 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public void handleMessage(ServerMessage serverMessage){
+    public void handleMessage(ServerMessage serverMessage) {
         ChatState state = applicationContextService.getChatState();
         if (state.isChatting() && state.getChatterUsername().equals(serverMessage.getFrom())) {
             System.out.println(serverMessage.getFrom() + ": " + serverMessage.getContent());

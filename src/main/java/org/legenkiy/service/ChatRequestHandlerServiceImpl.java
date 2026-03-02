@@ -17,10 +17,9 @@ public class ChatRequestHandlerServiceImpl implements ChatRequestHandlerService 
     private Scanner scanner = new Scanner(System.in);
 
 
-
     @Override
     public void handle(ServerMessage serverMessage) {
-        if (isChatting()){
+        if (isChatting()) {
             ClientMessage clientMessage = new ClientMessage();
             clientMessage.setFrom(applicationContextService.getClientState().getUsername());
             clientMessage.setMessageType(MessageType.ERROR);
@@ -28,10 +27,10 @@ public class ChatRequestHandlerServiceImpl implements ChatRequestHandlerService 
             senderService.send(
                     clientMessage
             );
-        }else {
+        } else {
             System.out.println("\u001b[32m" + serverMessage.getFrom() + " wants to chat. Will you accept it? Write Y - yes or N - no." + "\u001b[0m");
             String command = scanner.nextLine();
-            switch (command){
+            switch (command) {
                 case "Y" -> {
                     senderService.send(
                             ClientMessage.chatAccepted()
@@ -53,10 +52,10 @@ public class ChatRequestHandlerServiceImpl implements ChatRequestHandlerService 
     }
 
     @Override
-    public void handleChatRequest(){
+    public void handleChatRequest() {
         System.out.println("> Enter username");
         String username = scanner.nextLine();
-        ClientMessage clientMessage = ClientMessage.chatRequest(applicationContextService.getClientState().getUsername() , username);
+        ClientMessage clientMessage = ClientMessage.chatRequest(applicationContextService.getClientState().getUsername(), username);
         senderService.send(
                 clientMessage
         );

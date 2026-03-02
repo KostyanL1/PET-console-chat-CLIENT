@@ -9,13 +9,10 @@ import org.legenkiy.api.ApplicationContextService;
 import org.legenkiy.api.ChatRequestHandlerService;
 import org.legenkiy.api.ChatService;
 import org.legenkiy.protocol.mapper.JsonCodec;
-
-import org.legenkiy.protocol.message.ClientMessage;
 import org.legenkiy.protocol.message.ServerMessage;
 import org.legenkiy.service.ApplicationContextServiceImpl;
 import org.legenkiy.service.ChatRequestHandlerServiceImpl;
 import org.legenkiy.service.ChatServiceImpl;
-import org.legenkiy.state.ClientState;
 
 import java.io.BufferedReader;
 import java.io.IOException;
