@@ -7,9 +7,11 @@ import org.legenkiy.api.SenderService;
 import org.legenkiy.protocol.enums.MessageType;
 import org.legenkiy.protocol.message.ClientMessage;
 import org.legenkiy.protocol.message.ServerMessage;
+import org.springframework.stereotype.Service;
 
 import java.util.Scanner;
 
+@Service
 public class ChatRequestHandlerServiceImpl implements ChatRequestHandlerService {
     private final ApplicationContextService applicationContextService = new ApplicationContextServiceImpl();
     private final SenderService senderService = new SenderServiceImpl();

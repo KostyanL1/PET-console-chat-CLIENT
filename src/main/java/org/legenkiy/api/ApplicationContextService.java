@@ -1,7 +1,6 @@
 package org.legenkiy.api;
 
 import org.legenkiy.state.ApplicationContextHolder;
-import org.legenkiy.state.ChatState;
 import org.legenkiy.state.ClientState;
 
 import java.io.BufferedReader;
@@ -24,6 +23,5 @@ public interface ApplicationContextService {
 
     void connect(Socket socket);
 
-    ChatState getChatState();
 
 }

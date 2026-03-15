@@ -3,6 +3,7 @@ package org.legenkiy.state.enums;
 public enum State {
 
     UNAUTHENTICATED,
-    AUTHENTICATED
+    AUTHENTICATED,
+    IN_CHAT
 
 }

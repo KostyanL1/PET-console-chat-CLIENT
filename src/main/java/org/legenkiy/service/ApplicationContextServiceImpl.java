@@ -5,7 +5,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.legenkiy.api.ApplicationContextService;
 import org.legenkiy.state.ApplicationContextHolder;
-import org.legenkiy.state.ChatState;
 import org.legenkiy.state.ClientState;
 import org.springframework.stereotype.Service;
 
@@ -51,10 +50,6 @@ public class ApplicationContextServiceImpl implements ApplicationContextService 
         return getHolder().getBufferedReader();
     }
 
-    @Override
-    public ChatState getChatState() {
-        return getHolder().getChatState();
-    }
 
     @Override
     public void connect(Socket socket) {

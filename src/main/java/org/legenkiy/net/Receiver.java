@@ -1,33 +1,38 @@
 package org.legenkiy.net;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.legenkiy.api.ApplicationContextService;
 import org.legenkiy.api.ChatRequestHandlerService;
 import org.legenkiy.api.ChatService;
+import org.legenkiy.mapper.MessageMapper;
 import org.legenkiy.protocol.mapper.JsonCodec;
+import org.legenkiy.protocol.message.Envelope;
 import org.legenkiy.protocol.message.ServerMessage;
 import org.legenkiy.service.ApplicationContextServiceImpl;
 import org.legenkiy.service.ChatRequestHandlerServiceImpl;
 import org.legenkiy.service.ChatServiceImpl;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 
 
-@AllArgsConstructor
 @Getter
 @Setter
-public class Resiver implements Runnable {
+@Component
+@RequiredArgsConstructor
+public class Receiver implements Runnable {
 
-    private final JsonCodec mapper = new JsonCodec();
-    private final ApplicationContextService applicationContextService = new ApplicationContextServiceImpl();
-    private final Logger LOGGER = LogManager.getLogger(Resiver.class);
-    private final ChatRequestHandlerService chatRequestHandlerService = new ChatRequestHandlerServiceImpl();
-    private final ChatService chatService = new ChatServiceImpl();
+    private static final Logger LOGGER = LogManager.getLogger(Receiver.class);
+
+    private final MessageMapper mapper;
+    private final ApplicationContextService applicationContextService;
+    private final ChatRequestHandlerService chatRequestHandlerService;
+    private final ChatService chatService;
 
 
     @Override
@@ -37,15 +42,11 @@ public class Resiver implements Runnable {
                 BufferedReader bufferedReader = applicationContextService.getApplicationBufferedReader();
                 String message;
                 if ((message = bufferedReader.readLine()) != null) {
-                    ServerMessage serverMessage = mapper.decode(message, ServerMessage.class);
-                    switch (serverMessage.getMessageType()) {
-                        case OK -> {
-                            System.out.println(serverMessage.getContent());
-                        }
-                        case PM -> {
-                            chatRequestHandlerService.handle(serverMessage);
-                        }
-                        case MSG -> {
+                    Envelope envelope = mapper.decode(message, Envelope.class);
+                    switch (envelope.getType()) {
+                        case HELLO_ACK -> System.out.println("HELLO was received");
+                        case AUTH_OK -> System.out.println("Authenticated");
+                        case CHAT_INCOMING -> {
                             chatService.handleMessage(serverMessage);
                         }
                         case ACCEPTED -> {
@@ -55,7 +56,7 @@ public class Resiver implements Runnable {
                             System.out.println("Chat request was rejected");
                         }
                         default -> {
-                            System.out.println("...");
+                            System.out.println("default");
                         }
                     }
                 }

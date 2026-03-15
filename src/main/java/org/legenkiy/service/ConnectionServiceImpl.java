@@ -7,7 +7,7 @@ import org.legenkiy.api.ApplicationContextService;
 import org.legenkiy.api.ConnectionService;
 import org.legenkiy.api.RequestService;
 import org.legenkiy.api.SenderService;
-import org.legenkiy.net.Resiver;
+import org.legenkiy.net.Receiver;
 import org.legenkiy.net.TcpClient;
 import org.legenkiy.protocol.message.ClientMessage;
 
@@ -29,12 +29,12 @@ public class ConnectionServiceImpl implements ConnectionService {
     public void connect() {
         if (applicationContextService.getApplicationSocket() == null) {
             TcpClient tcpClient = new TcpClient();
-            Resiver resiver = new Resiver();
+            Receiver receiver = new Receiver();
             try {
                 //for init context holder
                 applicationContextService.connect(new Socket(HOST, PORT));
                 Thread tcpClientThreat = new Thread(tcpClient);
-                Thread resiverThread = new Thread(resiver);
+                Thread resiverThread = new Thread(receiver);
                 tcpClientThreat.start();
                 resiverThread.start();
                 senderService.send(
