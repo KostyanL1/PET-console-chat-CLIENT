@@ -1,19 +1,21 @@
 package org.legenkiy.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.legenkiy.api.ApplicationContextService;
 import org.legenkiy.api.SenderService;
-import org.legenkiy.protocol.mapper.JsonCodec;
-import org.legenkiy.protocol.message.ClientMessage;
+import org.legenkiy.mapper.MessageMapper;
+import org.springframework.stereotype.Service;
 
+@Service
+@RequiredArgsConstructor
 public class SenderServiceImpl implements SenderService {
 
     private final Logger LOGGER = LogManager.getLogger(SenderServiceImpl.class);
 
-    private final ApplicationContextService applicationContextService = new ApplicationContextServiceImpl();
-    private final JsonCodec mapper = new JsonCodec();
+    private final ApplicationContextService applicationContextService;
+    private final MessageMapper mapper;
 
     @Override
     public void send(ClientMessage clientMessage) {

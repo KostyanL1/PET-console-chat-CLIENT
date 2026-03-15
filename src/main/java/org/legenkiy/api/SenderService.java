@@ -1,9 +1,9 @@
 package org.legenkiy.api;
 
-import org.legenkiy.protocol.message.ClientMessage;
+import org.legenkiy.protocol.message.Envelope;
 
 public interface SenderService {
 
-    void send(ClientMessage clientMessage);
+    void send(Envelope envelope);
 
 }

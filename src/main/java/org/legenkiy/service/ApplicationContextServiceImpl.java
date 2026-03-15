@@ -7,6 +7,7 @@ import org.legenkiy.api.ApplicationContextService;
 import org.legenkiy.state.ApplicationContextHolder;
 import org.legenkiy.state.ChatState;
 import org.legenkiy.state.ClientState;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+@Service
 public class ApplicationContextServiceImpl implements ApplicationContextService {
 
     private final static Logger LOGGER = LogManager.getLogger(ApplicationContextServiceImpl.class);
@@ -50,7 +52,7 @@ public class ApplicationContextServiceImpl implements ApplicationContextService 
     }
 
     @Override
-    public ChatState getChatState(){
+    public ChatState getChatState() {
         return getHolder().getChatState();
     }
 

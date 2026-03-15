@@ -7,10 +7,9 @@ import org.legenkiy.api.ApplicationContextService;
 import org.legenkiy.api.ConnectionService;
 import org.legenkiy.api.RequestService;
 import org.legenkiy.api.SenderService;
-import org.legenkiy.net.Resiver;
+import org.legenkiy.net.Receiver;
 import org.legenkiy.net.TcpClient;
 import org.legenkiy.protocol.message.ClientMessage;
-import org.legenkiy.state.enums.State;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -28,14 +27,14 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     @Override
     public void connect() {
-        if (applicationContextService.getApplicationSocket() == null){
+        if (applicationContextService.getApplicationSocket() == null) {
             TcpClient tcpClient = new TcpClient();
-            Resiver resiver = new Resiver();
+            Receiver receiver = new Receiver();
             try {
                 //for init context holder
                 applicationContextService.connect(new Socket(HOST, PORT));
                 Thread tcpClientThreat = new Thread(tcpClient);
-                Thread resiverThread = new Thread(resiver);
+                Thread resiverThread = new Thread(receiver);
                 tcpClientThreat.start();
                 resiverThread.start();
                 senderService.send(
@@ -45,7 +44,7 @@ public class ConnectionServiceImpl implements ConnectionService {
             } catch (Exception e) {
                 LOGGER.info("Failed to connect to server, {}", e.getMessage());
             }
-        }else {
+        } else {
             System.out.println("Already connected");
         }
 

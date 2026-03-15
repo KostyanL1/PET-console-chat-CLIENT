@@ -5,27 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class ChatState {
-    @Getter
-    @Setter
-    private String chatterUsername;
-    @Getter
-    @Setter
-    private boolean chatting;
 
-
-    public void initChatState(String chatterUsername){
-        this.chatterUsername = chatterUsername;
-        this.chatting = true;
-    }
-
-    public void clearChatState(){
-        this.chatting = false;
-        this.chatterUsername = null;
-    }
-
-
+    private Long id;
+    private String username;
 
 }

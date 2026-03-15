@@ -1,12 +1,14 @@
 package org.legenkiy.api;
 
-import org.legenkiy.protocol.message.ServerMessage;
+import org.legenkiy.protocol.message.Envelope;
 
 public interface ChatService {
 
-    void startChat() ;
+    void handleIncomingChat(Envelope envelope);
 
-    void handleMessage(ServerMessage serverMessage);
+    void startChat();
+
+    void handleMessage(Envelope envelope);
 
 
 }
