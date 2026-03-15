@@ -5,10 +5,7 @@ import org.legenkiy.api.ApplicationContextService;
 import org.legenkiy.api.ChatService;
 import org.legenkiy.api.SenderService;
 import org.legenkiy.mapper.MessageMapper;
-import org.legenkiy.protocol.dtos.ChatAcceptPayload;
-import org.legenkiy.protocol.dtos.ChatIncomingPayload;
-import org.legenkiy.protocol.dtos.ChatRejectPayload;
-import org.legenkiy.protocol.dtos.ChatRequestPayload;
+import org.legenkiy.protocol.dtos.*;
 import org.legenkiy.protocol.enums.MessageType;
 import org.legenkiy.protocol.message.Envelope;
 import org.legenkiy.state.ClientState;
@@ -19,11 +16,12 @@ import java.util.Scanner;
 
 @Service
 @RequiredArgsConstructor
-public class ChatServiceImpl implements ChatService {
+public class ChatServiceImpl implements ChatService, Runnable {
 
     private final SenderService senderService;
     private final Scanner scanner = new Scanner(System.in);
     private final ApplicationContextService applicationContextService;
+
 
     @Override
     public void handleIncomingChat(Envelope envelope){
@@ -41,6 +39,10 @@ public class ChatServiceImpl implements ChatService {
                                     .build()
                     );
                     applicationContextService.getHolder().getClientState().setState(State.IN_CHAT);
+                    applicationContextService.getChatState().setUsername(chatIncomingPayload.getFrom());
+                    applicationContextService.getChatState().setId(chatIncomingPayload.getRequestId());
+                    Thread thread = new Thread(this);
+                    thread.start();
                 }
                 case "N" -> {
                     senderService.send(
@@ -66,32 +68,38 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public void startChat() {
         System.out.print("\033[H\033[2J");
-        String recipientUsername = applicationContextService.getChatState().getChatterUsername();
-        System.out.println("> Chat with " + recipientUsername + " started");
+        System.out.println("> Chat with " + applicationContextService.getHolder().getChatState().ge + " started");
         System.out.println("> Enter message. If you want to end chat write /end");
+        Long chatId = applicationContextService.getChatState().getId();
+        String username = applicationContextService.getChatState().getUsername();
+
         boolean flag = true;
         while (flag) {
             String message = scanner.nextLine();
             if (message.equals("/end")) {
-                applicationContextService.getChatState().clearChatState();
+                applicationContextService.getClientState().setState(State.AUTHENTICATED);
                 flag = false;
             }
-            ClientState state = applicationContextService.getHolder().getClientState();
-            ClientMessage clientMessage = ClientMessage.message(state.getUsername(), recipientUsername, message);
             senderService.send(
-                    clientMessage
+                    Envelope.builder()
+                            .type(MessageType.CHAT_MSG)
+                            .payload(new ChatMessagePayload(chatId, message))
+                            .build()
             );
         }
-        System.out.println("> Chat with " + recipientUsername + " ended");
+        System.out.println("> Chat with " + username + " ended");
     }
 
     @Override
-    public void handleMessage(ServerMessage serverMessage) {
-        ChatState state = applicationContextService.getChatState();
-        if (state.isChatting() && state.getChatterUsername().equals(serverMessage.getFrom())) {
-            System.out.println(serverMessage.getFrom() + ": " + serverMessage.getContent());
+    public void handleMessage(Envelope envelope) {
+        ChatMessagePayload chatMessagePayload = (ChatMessagePayload) envelope.getPayload();
+        if (applicationContextService.getClientState().getState().equals(State.IN_CHAT)) {
+            System.out.println("\\u001B[32m" + applicationContextService.getChatState().getUsername() + ": " + chatMessagePayload.getText() + "\\u001B[0m");
         }
     }
 
-
+    @Override
+    public void run() {
+        startChat();
+    }
 }

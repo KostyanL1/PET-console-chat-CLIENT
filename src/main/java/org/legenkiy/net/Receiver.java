@@ -9,12 +9,8 @@ import org.legenkiy.api.ApplicationContextService;
 import org.legenkiy.api.ChatRequestHandlerService;
 import org.legenkiy.api.ChatService;
 import org.legenkiy.mapper.MessageMapper;
-import org.legenkiy.protocol.mapper.JsonCodec;
 import org.legenkiy.protocol.message.Envelope;
 import org.legenkiy.protocol.message.ServerMessage;
-import org.legenkiy.service.ApplicationContextServiceImpl;
-import org.legenkiy.service.ChatRequestHandlerServiceImpl;
-import org.legenkiy.service.ChatServiceImpl;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -46,12 +42,8 @@ public class Receiver implements Runnable {
                     switch (envelope.getType()) {
                         case HELLO_ACK -> System.out.println("HELLO was received");
                         case AUTH_OK -> System.out.println("Authenticated");
-                        case CHAT_INCOMING -> {
-                            chatService.handleMessage(serverMessage);
-                        }
-                        case ACCEPTED -> {
-                            chatService.startChat();
-                        }
+                        case CHAT_INCOMING -> chatService.handleIncomingChat(envelope);
+                        case CHAT_MSG -> chatService.handleMessage(envelope);
                         case REJECTED -> {
                             System.out.println("Chat request was rejected");
                         }

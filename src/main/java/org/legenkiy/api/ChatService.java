@@ -1,6 +1,5 @@
 package org.legenkiy.api;
 
-
 import org.legenkiy.protocol.message.Envelope;
 
 public interface ChatService {
@@ -9,7 +8,7 @@ public interface ChatService {
 
     void startChat();
 
-    void handleMessage(ServerMessage serverMessage);
+    void handleMessage(Envelope envelope);
 
 
 }
