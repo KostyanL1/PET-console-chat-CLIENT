@@ -6,14 +6,15 @@ import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.legenkiy.api.ApplicationContextService;
-import org.legenkiy.api.ChatRequestHandlerService;
+import org.legenkiy.api.AuthService;
 import org.legenkiy.api.ChatService;
+import org.legenkiy.api.ErrorHandler;
 import org.legenkiy.mapper.MessageMapper;
 import org.legenkiy.protocol.message.Envelope;
-import org.legenkiy.protocol.message.ServerMessage;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
+
 import java.io.IOException;
 
 
@@ -27,8 +28,9 @@ public class Receiver implements Runnable {
 
     private final MessageMapper mapper;
     private final ApplicationContextService applicationContextService;
-    private final ChatRequestHandlerService chatRequestHandlerService;
     private final ChatService chatService;
+    private final AuthService authService;
+    private final ErrorHandler errorHandler;
 
 
     @Override
@@ -39,17 +41,18 @@ public class Receiver implements Runnable {
                 String message;
                 if ((message = bufferedReader.readLine()) != null) {
                     Envelope envelope = mapper.decode(message, Envelope.class);
-                    switch (envelope.getType()) {
-                        case HELLO_ACK -> System.out.println("HELLO was received");
-                        case AUTH_OK -> System.out.println("Authenticated");
-                        case CHAT_INCOMING -> chatService.handleIncomingChat(envelope);
-                        case CHAT_MSG -> chatService.handleMessage(envelope);
-                        case REJECTED -> {
-                            System.out.println("Chat request was rejected");
+                    try {
+                        switch (envelope.getType()) {
+                            case HELLO_ACK -> authService.processResponseHallo();
+                            case AUTH_OK -> authService.authenticate();
+                            case CHAT_INCOMING -> chatService.handleIncomingChat(envelope);
+                            case CHAT_MSG -> chatService.handleMessage(envelope);
+                            case CHAT_END -> chatService.endChat();
+                            case ERROR, AUTH_ERROR -> errorHandler.handleError(envelope);
+                            default -> {}
                         }
-                        default -> {
-                            System.out.println("default");
-                        }
+                    }catch (Exception e){
+                        LOGGER.error(e.getMessage());
                     }
                 }
             }

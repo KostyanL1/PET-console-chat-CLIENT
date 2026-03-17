@@ -5,7 +5,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.legenkiy.api.ApplicationContextService;
 import org.legenkiy.api.ConnectionService;
-import org.legenkiy.api.RequestService;
 import org.legenkiy.api.SenderService;
 import org.legenkiy.net.Receiver;
 import org.legenkiy.net.TcpClient;
@@ -21,7 +20,6 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     private final static Logger LOGGER = LogManager.getLogger(ConnectionServiceImpl.class);
 
-    private final RequestService requestService = new RequestServiceImpl();
     private final ApplicationContextService applicationContextService = new ApplicationContextServiceImpl();
     private final SenderService senderService = new SenderServiceImpl();
 

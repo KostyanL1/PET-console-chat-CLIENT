@@ -8,4 +8,10 @@ public interface AuthService {
 
     void logout();
 
+    void hello();
+
+    void processResponseHallo();
+
+    void authenticate();
+
 }
