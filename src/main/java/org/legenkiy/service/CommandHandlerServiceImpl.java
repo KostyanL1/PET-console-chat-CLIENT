@@ -1,11 +1,14 @@
 package org.legenkiy.service;
 
+import lombok.RequiredArgsConstructor;
 import org.legenkiy.api.*;
+import org.springframework.stereotype.Service;
 
+@Service
+@RequiredArgsConstructor
 public class CommandHandlerServiceImpl implements CommandHandlerService {
-    private final ConnectionService connectionService = new ConnectionServiceImpl();
-    private final AuthService authService = new AuthServiceImpl();
-    private final ChatRequestHandlerService chatRequestHandlerService = new ChatRequestHandlerServiceImpl();
+    private final ConnectionService connectionService;
+    private final AuthService authService;
 
     @Override
     public void handle(String command) {
@@ -28,7 +31,7 @@ public class CommandHandlerServiceImpl implements CommandHandlerService {
             }
             case "/chat" -> {
                 if (connectionService.isConnected()) {
-                    chatRequestHandlerService.handleChatRequest();
+
                 } else {
                     System.out.println("Connection needed");
                 }

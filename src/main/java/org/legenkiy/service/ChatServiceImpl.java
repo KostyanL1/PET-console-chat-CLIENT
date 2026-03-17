@@ -4,11 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.legenkiy.api.ApplicationContextService;
 import org.legenkiy.api.ChatService;
 import org.legenkiy.api.SenderService;
-import org.legenkiy.mapper.MessageMapper;
 import org.legenkiy.protocol.dtos.*;
 import org.legenkiy.protocol.enums.MessageType;
 import org.legenkiy.protocol.message.Envelope;
-import org.legenkiy.state.ClientState;
 import org.legenkiy.state.enums.State;
 import org.springframework.stereotype.Service;
 
@@ -68,7 +66,7 @@ public class ChatServiceImpl implements ChatService, Runnable {
     @Override
     public void startChat() {
         System.out.print("\033[H\033[2J");
-        System.out.println("> Chat with " + applicationContextService.getHolder().getChatState().ge + " started");
+        System.out.println("> Chat with " + applicationContextService.getHolder().getChatState().getUsername() + " started");
         System.out.println("> Enter message. If you want to end chat write /end");
         Long chatId = applicationContextService.getChatState().getId();
         String username = applicationContextService.getChatState().getUsername();
@@ -88,6 +86,16 @@ public class ChatServiceImpl implements ChatService, Runnable {
             );
         }
         System.out.println("> Chat with " + username + " ended");
+    }
+
+    @Override
+    public void endChat() {
+        System.out.print("\033[H\033[2J");
+        System.out.println("> Chat with " + applicationContextService.getHolder().getChatState().getUsername() + " ended");
+        applicationContextService.getChatState().setId(null);
+        applicationContextService.getChatState().setUsername(null);
+        System.out.print("\033[H\033[2J");
+        System.out.println("> Chat with " + applicationContextService.getHolder().getChatState().getUsername() + " ended");
     }
 
     @Override

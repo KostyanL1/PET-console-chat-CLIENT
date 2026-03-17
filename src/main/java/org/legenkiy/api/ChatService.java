@@ -8,6 +8,8 @@ public interface ChatService {
 
     void startChat();
 
+    void endChat();
+
     void handleMessage(Envelope envelope);
 
 
