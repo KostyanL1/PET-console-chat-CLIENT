@@ -9,10 +9,12 @@ import org.legenkiy.api.SenderService;
 import org.legenkiy.net.Receiver;
 import org.legenkiy.net.TcpClient;
 import org.legenkiy.protocol.message.ClientMessage;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.Socket;
 
+@Service
 public class ConnectionServiceImpl implements ConnectionService {
 
     private final String HOST = "localhost";
