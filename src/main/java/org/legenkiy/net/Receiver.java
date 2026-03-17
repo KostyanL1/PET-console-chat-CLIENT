@@ -11,6 +11,7 @@ import org.legenkiy.api.ChatService;
 import org.legenkiy.api.ErrorHandler;
 import org.legenkiy.mapper.MessageMapper;
 import org.legenkiy.protocol.message.Envelope;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -31,6 +32,7 @@ public class Receiver implements Runnable {
     private final ChatService chatService;
     private final AuthService authService;
     private final ErrorHandler errorHandler;
+    private final Environment environment;
 
 
     @Override
@@ -44,7 +46,7 @@ public class Receiver implements Runnable {
                     try {
                         switch (envelope.getType()) {
                             case HELLO_ACK -> authService.processResponseHallo();
-                            case AUTH_OK -> authService.authenticate();
+                            case AUTH_OK -> authService.authenticate(envelope);
                             case CHAT_INCOMING -> chatService.handleIncomingChat(envelope);
                             case CHAT_MSG -> chatService.handleMessage(envelope);
                             case CHAT_END -> chatService.endChat();
