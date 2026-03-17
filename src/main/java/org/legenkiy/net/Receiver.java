@@ -49,9 +49,10 @@ public class Receiver implements Runnable {
                             case CHAT_MSG -> chatService.handleMessage(envelope);
                             case CHAT_END -> chatService.endChat();
                             case ERROR, AUTH_ERROR -> errorHandler.handleError(envelope);
-                            default -> {}
+                            default -> {
+                            }
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         LOGGER.error(e.getMessage());
                     }
                 }

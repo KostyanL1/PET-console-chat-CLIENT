@@ -1,5 +1,7 @@
 package org.legenkiy.api;
 
+import org.legenkiy.protocol.message.Envelope;
+
 public interface AuthService {
 
     void register();
@@ -12,6 +14,6 @@ public interface AuthService {
 
     void processResponseHallo();
 
-    void authenticate();
+    void authenticate(Envelope envelope);
 
 }
