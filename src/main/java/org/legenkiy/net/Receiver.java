@@ -55,7 +55,7 @@ public class Receiver implements Runnable {
                             }
                         }
                     } catch (Exception e) {
-                        LOGGER.error(e.getMessage());
+                        LOGGER.error(e);
                     }
                 }
             }

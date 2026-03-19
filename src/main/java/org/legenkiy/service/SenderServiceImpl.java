@@ -20,13 +20,14 @@ public class SenderServiceImpl implements SenderService {
 
     @Override
     public void send(Envelope envelope) {
+        System.out.println("in sender");
         try {
             applicationContextService.getApplicationPrintWriter().println(
                     mapper.encode(
                             envelope
                     )
             );
-            LOGGER.warn("ClientMessage sent to server, {}", envelope.getType());
+            LOGGER.info("ClientMessage sent to server, {}", envelope.getType());
         } catch (Exception e) {
             LOGGER.info("Message failed to send, {}", e.getMessage());
         }

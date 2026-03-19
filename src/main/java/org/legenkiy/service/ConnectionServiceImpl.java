@@ -44,6 +44,8 @@ public class ConnectionServiceImpl implements ConnectionService {
                 Thread resiverThread = new Thread(receiver);
                 tcpClientThreat.start();
                 resiverThread.start();
+                System.out.println(applicationContextService.getApplicationBufferedReader());
+                System.out.println(applicationContextService.getApplicationPrintWriter());
                 senderService.send(
                         Envelope.builder()
                                 .type(MessageType.HELLO)
