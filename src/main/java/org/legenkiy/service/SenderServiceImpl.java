@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import org.legenkiy.api.ApplicationContextService;
 import org.legenkiy.api.SenderService;
 import org.legenkiy.mapper.MessageMapper;
+import org.legenkiy.protocol.message.Envelope;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,14 +19,14 @@ public class SenderServiceImpl implements SenderService {
     private final MessageMapper mapper;
 
     @Override
-    public void send(ClientMessage clientMessage) {
+    public void send(Envelope envelope) {
         try {
             applicationContextService.getApplicationPrintWriter().println(
                     mapper.encode(
-                            clientMessage
+                            envelope
                     )
             );
-            LOGGER.warn("ClientMessage sent to server, {}", clientMessage.getMessageType());
+            LOGGER.warn("ClientMessage sent to server, {}", envelope.getType());
         } catch (Exception e) {
             LOGGER.info("Message failed to send, {}", e.getMessage());
         }
