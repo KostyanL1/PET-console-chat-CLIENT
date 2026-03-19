@@ -7,6 +7,7 @@ import org.legenkiy.api.ApplicationContextService;
 import org.legenkiy.state.ApplicationContextHolder;
 import org.legenkiy.state.ChatState;
 import org.legenkiy.state.ClientState;
+import org.legenkiy.state.enums.State;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -42,11 +43,6 @@ public class ApplicationContextServiceImpl implements ApplicationContextService 
     }
 
     @Override
-    public int getProtocolVer() {
-        return getHolder().getPROTOCOL_VER();
-    }
-
-    @Override
     public BufferedReader getApplicationBufferedReader() {
         return getHolder().getBufferedReader();
     }
@@ -54,6 +50,16 @@ public class ApplicationContextServiceImpl implements ApplicationContextService 
     @Override
     public ChatState getChatState() {
         return getHolder().getChatState();
+    }
+
+    @Override
+    public void clear() {
+        ApplicationContextHolder applicationContextHolder = getHolder();
+        applicationContextHolder.setChatState(null);
+        applicationContextHolder.setPrintWriter(null);
+        applicationContextHolder.setBufferedReader(null);
+        applicationContextHolder.getClientState().setState(State.UNAUTHENTICATED);
+        applicationContextHolder.getClientState().setUsername(null);
     }
 
     @Override

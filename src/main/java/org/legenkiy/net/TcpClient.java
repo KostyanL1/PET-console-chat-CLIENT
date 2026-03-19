@@ -20,14 +20,15 @@ public class TcpClient implements Runnable {
     @Override
     public void run() {
 
-        try (Socket socket = applicationContextService.getApplicationSocket()) {
-
+        try {
+            Socket socket = applicationContextService.getApplicationSocket();
             LOGGER.info("TcpClient monitoring started");
             if (socket != null && !socket.isClosed()) applicationContextService.getHolder();
-
         } catch (Exception e) {
             LOGGER.info(e);
-        } finally {
+        }
+
+        /*finally {
             try {
 
                 Socket socket = applicationContextService.getApplicationSocket();
@@ -40,7 +41,7 @@ public class TcpClient implements Runnable {
                 LOGGER.info("Socket is closed {}", e.getMessage());
             }
         }
-
+*/
     }
 
 }

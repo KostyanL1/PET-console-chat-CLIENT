@@ -18,12 +18,12 @@ public interface ApplicationContextService {
 
     ClientState getClientState();
 
-    int getProtocolVer();
-
     BufferedReader getApplicationBufferedReader();
 
     void connect(Socket socket);
 
     ChatState getChatState();
+
+    void clear();
 
 }

@@ -4,6 +4,8 @@ import org.legenkiy.protocol.message.Envelope;
 
 public interface ChatService {
 
+    void sendChatRequest();
+
     void handleIncomingChat(Envelope envelope);
 
     void startChat();
