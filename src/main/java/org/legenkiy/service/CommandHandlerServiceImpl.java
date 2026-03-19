@@ -9,37 +9,17 @@ import org.springframework.stereotype.Service;
 public class CommandHandlerServiceImpl implements CommandHandlerService {
     private final ConnectionService connectionService;
     private final AuthService authService;
+    private final ChatService chatService;
 
     @Override
     public void handle(String command) {
         switch (command) {
-            case "/connect" -> {
-                connectionService.connect();
-            }
-            case "/disconnect" -> {
-                connectionService.disconnect();
-            }
-            case "/register" -> {
-                authService.register();
-            }
-            case "/login" -> {
-                if (connectionService.isConnected()) {
-                    authService.login();
-                } else {
-                    System.out.println("Connection needed");
-                }
-            }
-            case "/chat" -> {
-                if (connectionService.isConnected()) {
-
-                } else {
-                    System.out.println("Connection needed");
-                }
-            }
-            default -> {
-                System.out.println("Unknown command");
-            }
+            case "/connect" -> connectionService.connect();
+            case "/disconnect" -> connectionService.disconnect();
+            case "/register" -> authService.register();
+            case "/login" -> authService.login();
+            case "/chat" -> chatService.sendChatRequest();
+            default -> System.out.println("Unknown command");
         }
-
     }
 }
