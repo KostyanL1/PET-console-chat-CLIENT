@@ -43,11 +43,6 @@ public class ApplicationContextServiceImpl implements ApplicationContextService 
     }
 
     @Override
-    public int getProtocolVer() {
-        return getHolder().getPROTOCOL_VER();
-    }
-
-    @Override
     public BufferedReader getApplicationBufferedReader() {
         return getHolder().getBufferedReader();
     }

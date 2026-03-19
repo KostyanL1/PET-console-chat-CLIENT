@@ -22,10 +22,10 @@ public class ChatServiceImpl implements ChatService, Runnable {
 
 
     @Override
-    public void handleIncomingChat(Envelope envelope){
+    public void handleIncomingChat(Envelope envelope) {
         ChatIncomingPayload chatIncomingPayload = (ChatIncomingPayload) envelope.getPayload();
 
-        if (applicationContextService.getClientState().getState().equals(State.AUTHENTICATED)){
+        if (applicationContextService.getClientState().getState().equals(State.AUTHENTICATED)) {
             System.out.println("\u001b[32m" + chatIncomingPayload.getFrom() + " wants to chat. Will you accept it? Write Y - yes or N - no." + "\u001b[0m");
             String command = scanner.nextLine();
             switch (command) {
