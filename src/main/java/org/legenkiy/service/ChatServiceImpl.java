@@ -22,11 +22,26 @@ public class ChatServiceImpl implements ChatService, Runnable {
 
 
     @Override
+    public void sendChatRequest() {
+        System.out.println("> Enter username");
+        String username = scanner.nextLine();
+        ChatRequestPayload chatRequestPayload = new ChatRequestPayload();
+        chatRequestPayload.setTo(username);
+        senderService.send(
+                Envelope.builder()
+                        .type(MessageType.CHAT_REQUEST)
+                        .payload(chatRequestPayload)
+                        .build()
+        );
+        System.out.println("> Chat request sent to user: " + username + ". Waiting response.");
+    }
+
+    @Override
     public void handleIncomingChat(Envelope envelope) {
         ChatIncomingPayload chatIncomingPayload = (ChatIncomingPayload) envelope.getPayload();
 
         if (applicationContextService.getClientState().getState().equals(State.AUTHENTICATED)) {
-            System.out.println("\u001b[32m" + chatIncomingPayload.getFrom() + " wants to chat. Will you accept it? Write Y - yes or N - no." + "\u001b[0m");
+            System.out.println("\u001b[32m> " + chatIncomingPayload.getFrom() + " wants to chat. Will you accept it? Write Y - yes or N - no." + "\u001b[0m");
             String command = scanner.nextLine();
             switch (command) {
                 case "Y" -> {
@@ -49,9 +64,9 @@ public class ChatServiceImpl implements ChatService, Runnable {
                                     .payload(new ChatRejectPayload(chatIncomingPayload.getRequestId()))
                                     .build()
                     );
-                    System.out.println("Chat declined");
+                    System.out.println("> Chat declined");
                 }
-                default -> System.out.println("Unknown command");
+                default -> System.out.println("> Unknown command");
             }
         } else {
             senderService.send(
