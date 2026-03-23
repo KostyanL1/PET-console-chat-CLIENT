@@ -40,11 +40,13 @@ public class ChatServiceImpl implements ChatService, Runnable {
     public void handleIncomingChat(Envelope envelope) {
         ChatIncomingPayload chatIncomingPayload = (ChatIncomingPayload) envelope.getPayload();
 
-        if (applicationContextService.getClientState().getState().equals(State.AUTHENTICATED)) {
+        if (!applicationContextService.getClientState().getState().equals(State.IN_CHAT)) {
             System.out.println("\u001b[32m> " + chatIncomingPayload.getFrom() + " wants to chat. Will you accept it? Write Y - yes or N - no." + "\u001b[0m");
+            scanner.nextLine();
             String command = scanner.nextLine();
             switch (command) {
                 case "Y" -> {
+                    System.out.println("> You accepted chat request");
                     senderService.send(
                             Envelope.builder()
                                     .type(MessageType.CHAT_ACCEPT)
@@ -58,6 +60,7 @@ public class ChatServiceImpl implements ChatService, Runnable {
                     thread.start();
                 }
                 case "N" -> {
+                    System.out.println("> You rejected chat request");
                     senderService.send(
                             Envelope.builder()
                                     .type(MessageType.CHAT_REJECT)
