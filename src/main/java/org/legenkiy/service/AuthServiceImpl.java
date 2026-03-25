@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
+import static org.legenkiy.config.ApplicationConfig.scanner;
+
 @Component
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -23,7 +25,6 @@ public class AuthServiceImpl implements AuthService {
     private final SenderService senderService;
     private final ApplicationContextService applicationContextService;
 
-    private final Scanner scanner = new Scanner(System.in);
 
     @Override
     public void register() {

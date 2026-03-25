@@ -6,8 +6,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.legenkiy.api.ApplicationContextService;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
 import java.net.Socket;
 
 @Component
@@ -27,21 +25,6 @@ public class TcpClient implements Runnable {
         } catch (Exception e) {
             LOGGER.info(e);
         }
-
-        /*finally {
-            try {
-
-                Socket socket = applicationContextService.getApplicationSocket();
-                if (!socket.isClosed()) {
-                    socket.close();
-                    LOGGER.info("Socked closed");
-                }
-
-            } catch (IOException e) {
-                LOGGER.info("Socket is closed {}", e.getMessage());
-            }
-        }
-*/
     }
 
 }

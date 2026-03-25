@@ -7,14 +7,14 @@ import org.legenkiy.config.ApplicationConfig;
 import org.legenkiy.state.ApplicationContextHolder;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import java.util.Scanner;
+import static org.legenkiy.config.ApplicationConfig.scanner;
+
 
 public class Application {
 
     private final static Logger LOGGER = LogManager.getLogger(Application.class);
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
         context.registerShutdownHook();
 

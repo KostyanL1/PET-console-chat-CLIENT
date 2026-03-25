@@ -10,18 +10,15 @@ import org.legenkiy.protocol.message.Envelope;
 import org.legenkiy.state.enums.State;
 import org.springframework.stereotype.Service;
 
-import java.util.Scanner;
+import static org.legenkiy.config.ApplicationConfig.scanner;
 
 @Service
 @RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService, Runnable {
 
     private final SenderService senderService;
-    private final Scanner scanner = new Scanner(System.in);
     private final ApplicationContextService applicationContextService;
 
-
-    @Override
     public void sendChatRequest() {
         System.out.println("> Enter username");
         String username = scanner.nextLine();
@@ -42,35 +39,40 @@ public class ChatServiceImpl implements ChatService, Runnable {
 
         if (!applicationContextService.getClientState().getState().equals(State.IN_CHAT)) {
             System.out.println("\u001b[32m> " + chatIncomingPayload.getFrom() + " wants to chat. Will you accept it? Write Y - yes or N - no." + "\u001b[0m");
-            scanner.nextLine();
-            String command = scanner.nextLine();
-            switch (command) {
-                case "Y" -> {
-                    System.out.println("> You accepted chat request");
-                    senderService.send(
-                            Envelope.builder()
-                                    .type(MessageType.CHAT_ACCEPT)
-                                    .payload(new ChatAcceptPayload(chatIncomingPayload.getRequestId()))
-                                    .build()
-                    );
-                    applicationContextService.getHolder().getClientState().setState(State.IN_CHAT);
-                    applicationContextService.getChatState().setUsername(chatIncomingPayload.getFrom());
-                    applicationContextService.getChatState().setId(chatIncomingPayload.getRequestId());
-                    Thread thread = new Thread(this);
-                    thread.start();
+            while (true){
+                System.out.println("check");
+                String command = scanner.nextLine();
+                switch (command) {
+                    case "Y" -> {
+                        System.out.println("> You accepted chat request");
+                        senderService.send(
+                                Envelope.builder()
+                                        .type(MessageType.CHAT_ACCEPT)
+                                        .payload(new ChatAcceptPayload(chatIncomingPayload.getRequestId()))
+                                        .build()
+                        );
+                        applicationContextService.getHolder().getClientState().setState(State.IN_CHAT);
+                        applicationContextService.getChatState().setUsername(chatIncomingPayload.getFrom());
+                        applicationContextService.getChatState().setId(chatIncomingPayload.getRequestId());
+                        Thread thread = new Thread(this);
+                        thread.start();
+                        return;
+                    }
+                    case "N" -> {
+                        System.out.println("> You rejected chat request");
+                        senderService.send(
+                                Envelope.builder()
+                                        .type(MessageType.CHAT_REJECT)
+                                        .payload(new ChatRejectPayload(chatIncomingPayload.getRequestId()))
+                                        .build()
+                        );
+                        System.out.println("> Chat declined");
+                        return;
+                    }
+                    default -> System.out.println("> Unknown command enter Y to accept, N to reject.");
                 }
-                case "N" -> {
-                    System.out.println("> You rejected chat request");
-                    senderService.send(
-                            Envelope.builder()
-                                    .type(MessageType.CHAT_REJECT)
-                                    .payload(new ChatRejectPayload(chatIncomingPayload.getRequestId()))
-                                    .build()
-                    );
-                    System.out.println("> Chat declined");
-                }
-                default -> System.out.println("> Unknown command");
             }
+
         } else {
             senderService.send(
                     Envelope.builder()
