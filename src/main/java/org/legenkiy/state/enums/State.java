@@ -4,6 +4,7 @@ public enum State {
 
     UNAUTHENTICATED,
     AUTHENTICATED,
-    IN_CHAT
+    IN_CHAT,
+    AWAITING_CHAT_CONFIRMATION
 
 }

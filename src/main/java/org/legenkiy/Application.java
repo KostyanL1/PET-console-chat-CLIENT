@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.legenkiy.api.CommandHandlerService;
 import org.legenkiy.config.ApplicationConfig;
 import org.legenkiy.state.ApplicationContextHolder;
+import org.legenkiy.state.enums.State;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import static org.legenkiy.config.ApplicationConfig.scanner;

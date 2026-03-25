@@ -10,6 +10,9 @@ import org.legenkiy.protocol.message.Envelope;
 import org.legenkiy.state.enums.State;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import static org.legenkiy.config.ApplicationConfig.scanner;
 
 @Service
@@ -18,6 +21,8 @@ public class ChatServiceImpl implements ChatService, Runnable {
 
     private final SenderService senderService;
     private final ApplicationContextService applicationContextService;
+
+    private ChatIncomingPayload chatIncomingPayload;
 
     public void sendChatRequest() {
         System.out.println("> Enter username");
@@ -36,55 +41,18 @@ public class ChatServiceImpl implements ChatService, Runnable {
     @Override
     public void handleIncomingChat(Envelope envelope) {
         ChatIncomingPayload chatIncomingPayload = (ChatIncomingPayload) envelope.getPayload();
-
+        this.chatIncomingPayload = chatIncomingPayload;
         if (!applicationContextService.getClientState().getState().equals(State.IN_CHAT)) {
+            applicationContextService.getClientState().setState(State.AWAITING_CHAT_CONFIRMATION);
             System.out.println("\u001b[32m> " + chatIncomingPayload.getFrom() + " wants to chat. Will you accept it? Write Y - yes or N - no." + "\u001b[0m");
-            while (true){
-                System.out.println("check");
-                String command = scanner.nextLine();
-                switch (command) {
-                    case "Y" -> {
-                        System.out.println("> You accepted chat request");
-                        senderService.send(
-                                Envelope.builder()
-                                        .type(MessageType.CHAT_ACCEPT)
-                                        .payload(new ChatAcceptPayload(chatIncomingPayload.getRequestId()))
-                                        .build()
-                        );
-                        applicationContextService.getHolder().getClientState().setState(State.IN_CHAT);
-                        applicationContextService.getChatState().setUsername(chatIncomingPayload.getFrom());
-                        applicationContextService.getChatState().setId(chatIncomingPayload.getRequestId());
-                        Thread thread = new Thread(this);
-                        thread.start();
-                        return;
-                    }
-                    case "N" -> {
-                        System.out.println("> You rejected chat request");
-                        senderService.send(
-                                Envelope.builder()
-                                        .type(MessageType.CHAT_REJECT)
-                                        .payload(new ChatRejectPayload(chatIncomingPayload.getRequestId()))
-                                        .build()
-                        );
-                        System.out.println("> Chat declined");
-                        return;
-                    }
-                    default -> System.out.println("> Unknown command enter Y to accept, N to reject.");
-                }
-            }
-
         } else {
-            senderService.send(
-                    Envelope.builder()
-                            .type(MessageType.CHAT_REJECT)
-                            .payload(new ChatRejectPayload(chatIncomingPayload.getRequestId()))
-                            .build()
-            );
+            rejectChat();
         }
     }
 
     @Override
     public void startChat() {
+        applicationContextService.getClientState().setState(State.IN_CHAT);
         System.out.print("\033[H\033[2J");
         System.out.println("> Chat with " + applicationContextService.getHolder().getChatState().getUsername() + " started");
         System.out.println("> Enter message. If you want to end chat write /end");
@@ -95,7 +63,7 @@ public class ChatServiceImpl implements ChatService, Runnable {
         while (flag) {
             String message = scanner.nextLine();
             if (message.equals("/end")) {
-                applicationContextService.getClientState().setState(State.AUTHENTICATED);
+                endChat();
                 flag = false;
             }
             senderService.send(
@@ -112,6 +80,7 @@ public class ChatServiceImpl implements ChatService, Runnable {
     public void endChat() {
         System.out.print("\033[H\033[2J");
         System.out.println("> Chat with " + applicationContextService.getHolder().getChatState().getUsername() + " ended");
+        applicationContextService.getClientState().setState(State.AUTHENTICATED);
         applicationContextService.getChatState().setId(null);
         applicationContextService.getChatState().setUsername(null);
         System.out.print("\033[H\033[2J");
@@ -129,5 +98,34 @@ public class ChatServiceImpl implements ChatService, Runnable {
     @Override
     public void run() {
         startChat();
+    }
+
+    @Override
+    public void acceptChat(){
+        System.out.println("> You accepted chat request");
+        senderService.send(
+                Envelope.builder()
+                        .type(MessageType.CHAT_ACCEPT)
+                        .payload(new ChatAcceptPayload(chatIncomingPayload.getRequestId()))
+                        .build()
+        );
+        applicationContextService.getHolder().getClientState().setState(State.IN_CHAT);
+        applicationContextService.getChatState().setUsername(chatIncomingPayload.getFrom());
+        applicationContextService.getChatState().setId(chatIncomingPayload.getRequestId());
+        Thread thread = new Thread(this);
+        thread.start();
+    }
+
+    @Override
+    public void rejectChat(){
+        System.out.println("> You rejected chat request");
+        senderService.send(
+                Envelope.builder()
+                        .type(MessageType.CHAT_REJECT)
+                        .payload(new ChatRejectPayload(chatIncomingPayload.getRequestId()))
+                        .build()
+        );
+        applicationContextService.getClientState().setState(State.AUTHENTICATED);
+        System.out.println("> Chat declined");
     }
 }
