@@ -9,11 +9,13 @@ public interface ChatService {
 
     void handleIncomingChat(Envelope envelope);
 
-    void startChat();
+    void startChat(Envelope envelope);
 
     void endChat();
 
     void handleMessage(Envelope envelope);
+
+    void sendMessage(String message);
 
     void acceptChat();
 

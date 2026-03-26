@@ -2,6 +2,7 @@ package org.legenkiy;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.legenkiy.api.ChatService;
 import org.legenkiy.api.CommandHandlerService;
 import org.legenkiy.config.ApplicationConfig;
 import org.legenkiy.state.ApplicationContextHolder;
@@ -22,11 +23,16 @@ public class Application {
         LOGGER.info("APPLICATION STARTED");
         ApplicationContextHolder.getHolder();
         CommandHandlerService commandHandlerService = context.getBean(CommandHandlerService.class);
+        ChatService chatService = context.getBean(ChatService.class);
 
         System.out.println("> HELLO :)");
-        String command;
-        while (!(command = scanner.nextLine().replace(" ", "")).equals("/exit")) {
-            commandHandlerService.handle(command);
+        String input;
+        while (!(input = scanner.nextLine()).equals("/exit")) {
+            if (ApplicationContextHolder.getHolder().getClientState().getState().equals(State.IN_CHAT)){
+                chatService.sendMessage(input);
+            }else {
+                commandHandlerService.handle(input);
+            }
         }
         System.out.println("> BYE :(");
         LOGGER.info("Application closed");

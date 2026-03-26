@@ -28,7 +28,7 @@ public class ApplicationContextHolder {
     private BufferedReader bufferedReader;
     @Getter
     @Setter
-    private ChatState chatState;
+    private volatile ChatState chatState;
 
     private ApplicationContextHolder() {
     }

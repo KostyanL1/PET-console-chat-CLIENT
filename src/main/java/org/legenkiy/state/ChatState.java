@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class ChatState {
 
-    private Long id;
-    private String username;
+    private volatile Long id;
+    private volatile String username;
 
 }

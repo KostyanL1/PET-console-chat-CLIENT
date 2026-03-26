@@ -48,6 +48,7 @@ public class Receiver implements Runnable {
                             case HELLO_ACK -> authService.processResponseHallo();
                             case AUTH_OK -> authService.authenticate(envelope);
                             case CHAT_INCOMING -> chatService.handleIncomingChat(envelope);
+                            case CHAT_STARTED -> chatService.startChat(envelope);
                             case CHAT_MSG -> chatService.handleMessage(envelope);
                             case CHAT_END -> chatService.endChat();
                             case ERROR, AUTH_ERROR -> errorHandler.handleError(envelope);
