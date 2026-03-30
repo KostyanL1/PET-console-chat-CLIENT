@@ -16,7 +16,7 @@ import static org.legenkiy.config.ApplicationConfig.scanner;
 
 @Service
 @RequiredArgsConstructor
-public class ChatServiceImpl implements ChatService{
+public class ChatServiceImpl implements ChatService {
 
     private final SenderService senderService;
     private final ApplicationContextService applicationContextService;
@@ -51,16 +51,16 @@ public class ChatServiceImpl implements ChatService{
     }
 
     @Override
-    public void sendMessage(String message){
+    public void sendMessage(String message) {
         Long chatId = applicationContextService.getChatState().getId();
-        if (!message.equals("/end")){
+        if (!message.equals("/end")) {
             senderService.send(
                     Envelope.builder()
                             .type(MessageType.CHAT_MSG)
                             .payload(new ChatMessagePayload(chatId, message))
                             .build()
             );
-        }else {
+        } else {
             endChat();
         }
 
@@ -95,7 +95,7 @@ public class ChatServiceImpl implements ChatService{
     }
 
     @Override
-    public void acceptChat(){
+    public void acceptChat() {
         System.out.println("> You accepted chat request");
         senderService.send(
                 Envelope.builder()
@@ -106,7 +106,7 @@ public class ChatServiceImpl implements ChatService{
     }
 
     @Override
-    public void rejectChat(){
+    public void rejectChat() {
         System.out.println("> You rejected chat request");
         senderService.send(
                 Envelope.builder()

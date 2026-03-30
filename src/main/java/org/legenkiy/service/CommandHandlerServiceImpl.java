@@ -15,13 +15,13 @@ public class CommandHandlerServiceImpl implements CommandHandlerService {
 
     @Override
     public void handle(String command) {
-        if (applicationContextService.getClientState().getState().equals(State.AWAITING_CHAT_CONFIRMATION)){
+        if (applicationContextService.getClientState().getState().equals(State.AWAITING_CHAT_CONFIRMATION)) {
             switch (command) {
                 case "Y" -> chatService.acceptChat();
                 case "N" -> chatService.rejectChat();
                 default -> System.out.println("> Unknown command. Enter Y to accept, N to reject.");
             }
-        }else {
+        } else {
             switch (command) {
                 case "/connect" -> connectionService.connect();
                 case "/disconnect" -> connectionService.disconnect();
