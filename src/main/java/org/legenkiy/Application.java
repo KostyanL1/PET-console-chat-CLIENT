@@ -20,12 +20,11 @@ public class Application {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
         context.registerShutdownHook();
 
-        LOGGER.info("APPLICATION STARTED");
+        LOGGER.info("Application started.");
         ApplicationContextHolder.getHolder();
         CommandHandlerService commandHandlerService = context.getBean(CommandHandlerService.class);
         ChatService chatService = context.getBean(ChatService.class);
-
-        System.out.println("> HELLO :)");
+        System.out.println("> Application started. If you want to connect to the server. Enter \"/connect\".");
         String input;
         while (!(input = scanner.nextLine()).equals("/exit")) {
             if (ApplicationContextHolder.getHolder().getClientState().getState().equals(State.IN_CHAT)) {
@@ -34,7 +33,6 @@ public class Application {
                 commandHandlerService.handle(input);
             }
         }
-        System.out.println("> BYE :(");
         LOGGER.info("Application closed");
         System.exit(1);
     }
