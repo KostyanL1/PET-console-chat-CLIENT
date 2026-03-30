@@ -7,7 +7,6 @@ import org.legenkiy.api.SenderService;
 import org.legenkiy.protocol.dtos.*;
 import org.legenkiy.protocol.enums.MessageType;
 import org.legenkiy.protocol.message.Envelope;
-import org.legenkiy.state.ChatState;
 import org.legenkiy.state.enums.State;
 import org.springframework.stereotype.Service;
 
@@ -33,13 +32,11 @@ public class ChatServiceImpl implements ChatService {
                         .payload(chatRequestPayload)
                         .build()
         );
-        System.out.println("Sent request : " + applicationContextService.getChatState().getId());
     }
 
     @Override
     public void handleIncomingChat(Envelope envelope) {
         ChatIncomingPayload chatIncomingPayload = (ChatIncomingPayload) envelope.getPayload();
-        System.out.println(chatIncomingPayload.getRequestId());
         if (!applicationContextService.getClientState().getState().equals(State.IN_CHAT)) {
             applicationContextService.getClientState().setState(State.AWAITING_CHAT_CONFIRMATION);
             applicationContextService.getChatState().setId(chatIncomingPayload.getRequestId());
@@ -90,7 +87,7 @@ public class ChatServiceImpl implements ChatService {
     public void handleMessage(Envelope envelope) {
         ChatMessagePayload chatMessagePayload = (ChatMessagePayload) envelope.getPayload();
         if (applicationContextService.getClientState().getState().equals(State.IN_CHAT)) {
-            System.out.println(applicationContextService.getChatState().getUsername() + ": " + chatMessagePayload.getText());
+            System.out.println("> " + applicationContextService.getChatState().getUsername() + ": " + chatMessagePayload.getText());
         }
     }
 

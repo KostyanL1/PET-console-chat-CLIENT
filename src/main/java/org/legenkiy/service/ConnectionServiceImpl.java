@@ -51,6 +51,7 @@ public class ConnectionServiceImpl implements ConnectionService {
                                 .type(MessageType.HELLO)
                                 .build()
                 );
+                System.out.println("Successful connection");
                 LOGGER.info("Connected");
             } catch (Exception e) {
                 LOGGER.info("Failed to connect to server, {}", e.getMessage());

@@ -20,7 +20,6 @@ public class SenderServiceImpl implements SenderService {
 
     @Override
     public void send(Envelope envelope) {
-        System.out.println("in sender");
         try {
             applicationContextService.getApplicationPrintWriter().println(
                     mapper.encode(
