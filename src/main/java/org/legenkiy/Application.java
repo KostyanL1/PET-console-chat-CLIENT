@@ -28,9 +28,9 @@ public class Application {
         System.out.println("> HELLO :)");
         String input;
         while (!(input = scanner.nextLine()).equals("/exit")) {
-            if (ApplicationContextHolder.getHolder().getClientState().getState().equals(State.IN_CHAT)){
+            if (ApplicationContextHolder.getHolder().getClientState().getState().equals(State.IN_CHAT)) {
                 chatService.sendMessage(input);
-            }else {
+            } else {
                 commandHandlerService.handle(input);
             }
         }
